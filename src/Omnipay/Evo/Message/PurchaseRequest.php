@@ -63,14 +63,8 @@ class PurchaseRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('amount', 'card', 'transactionId');
-        /**
-         * @var Omnipay\Common\CreditCard $card
-         */
-        $card = $this->getCard();
-        $card->validate();
 
-        $this->OrderId = time();
+        $this->OrderId = time(); // @TODO: temporary!
         
         return [
             'ClientId' => $this->getMerchantId(),
@@ -80,65 +74,6 @@ class PurchaseRequest extends AbstractRequest
             'Currency' => $this->getCurrency(),
         ];
         
-        // @TODO: This lot need to go!
-        $data = new SimpleXMLElement('<CC5Request/>');
-
-            $data->Name = $this->getUsername();
-            $data->Password = $this->getPassword();
-            $data->ClientId = $this->getMerchantId();
-            $data->Type = 'PostAuth';
-            $data->IPAddress = $this->getClientIP();
-            $data->Email = $card->getEmail();
-            $data->OrderId = '111111111';
-            $data->TransId = $this->getTransactionId();
-            $data->Total = $this->getAmount();
-            $data->Currency = $this->getCurrency();
-            $data->Number = $card->getNumber();
-            $data->Expires = $card->getExpiryDate('m/y');
-            $data->Cvv2Val = $card->getCvv();
-    
-            // "Bill To" info.
-            $billTo = $data->addChild('BillTo');
-            $billTo->Name = $card->getBillingFirstName() . ' ' . $card->getBillingLastName();
-            $billTo->Street1 = $card->getBillingAddress1();
-            $billTo->Street2 = $card->getBillingAddress2();
-            $billTo->City = $card->getBillingCity();
-            $billTo->StateProv = $card->getBillingState();
-            $billTo->PostalCode = $card->getBillingPostcode();
-            $billTo->Country = $card->getBillingCountry();
-            $billTo->TelVoice = $card->getBillingPhone();
-            
-            // The shipping info.
-            $ShipTo = $data->addChild('ShipTo');
-            $ShipTo->Name = $card->getShippingFirstName() . ' ' . $card->getShippingLastName();
-            $ShipTo->Street1 = $card->getShippingAddress1();
-            $ShipTo->Street2 = $card->getShippingAddress2();
-            $ShipTo->City = $card->getShippingCity();
-            $ShipTo->StateProv = $card->getShippingState();
-            $ShipTo->PostalCode = $card->getShippingPostcode();
-            $ShipTo->Country = $card->getShippingCountry();
-            $ShipTo->TelVoice = $card->getShippingPhone();
-    
-            // @TODO: We'll need access to the order lines!
-            $orderItemList = $data->addChild('OrderItemList');
-            $orderItem1 = $orderItemList->addChild('OrderItem');
-            $orderItem1->ItemNumber = '1';
-            $orderItem1->ProductCode = '2';
-            $orderItem1->Qty = 3;
-            $orderItem1->Desc = '4';
-            $orderItem1->Id = '5';
-            $orderItem1->Price = '6';
-            $orderItem1->Total = '18';
-            $orderItem2 = $orderItemList->addChild('OrderItem');
-            $orderItem2->ItemNumber = '7';
-            $orderItem2->ProductCode = '8';
-            $orderItem2->Qty = 9;
-            $orderItem2->Desc = '10';
-            $orderItem2->Id = '11';
-            $orderItem2->Price = '12';
-            $orderItem2->Total = '108';
-        
-        return $data;
     }
 
     public function getTokenUrl()

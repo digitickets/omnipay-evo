@@ -25,13 +25,20 @@ class Response extends AbstractResponse implements RedirectResponseInterface
 
     public function isSuccessful()
     {
-        return (isset($this->data['status']) || $this->data['status'] === 'ok');
+        // We actually want to always return false, so that the controller then checks
+        // for redirection.
+        return false;
+    }
+
+    public function hasToken()
+    {
+        return (isset($this->data['status']) && $this->data['status'] === 'ok');
     }
 
     public function isRedirect()
     {
-        // I think we *always* redirect.
-        return true;
+        // I think we *always* redirect, but only if successful.
+        return $this->hasToken();
     }
 
     public function getRedirectUrl()
@@ -74,5 +81,17 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         $tokenParts = [];
         parse_str($data, $tokenParts);
         return $tokenParts;
+    }
+
+    public function getMessage()
+    {
+        if ($this->hasToken()) {
+            return null;
+        }
+        if (isset($this->data['msg'])) {
+            return $this->data['msg'];
+        }
+        
+        return 'Unable to retrieve error message';
     }
 }
