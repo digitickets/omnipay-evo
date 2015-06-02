@@ -15,14 +15,16 @@
     "authors": [
         {
             "name": "Glenn Jenkins",
-            "email": "pedanticantic@gmail.com"
+            "email": "pedanticantic@gmail.com",
+            "role": "Developer"
         }
     ],
     "autoload": {
         "psr-0": { "Omnipay\\Evo\\" : "src/" }
     },
     "require": {
-        "omnipay/common": "2.*"
+        "omnipay/common": "2.*",
+        "php": ">=5.4.0"
     },
     "require-dev": {
         "guzzle/plugin-mock": "~3.1",
@@ -37,5 +39,6 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "version": "v1.0.0-alpha"
 }
