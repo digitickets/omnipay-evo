@@ -24,6 +24,9 @@ class Gateway extends AbstractGateway
             'merchantId' => '',
             'password' => '',
             'userName' => '',
+            'okUrl' => '',
+            'failUrl' => '',
+            'pendingUrl' => '',
             'testMode' => false
         );
     }

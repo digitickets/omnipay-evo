@@ -64,15 +64,16 @@ class Response extends AbstractResponse implements RedirectResponseInterface
             'Token' => $this->data['msg'],
             'TranType' => 'Auth',
             'Total' => $this->request->getAmount(),
-            'Currency' => $this->request->getCurrency(),
+            'Currency' => $this->request->convertCurrency($this->request->getCurrency()),
             'OrderId' => $this->request->getOrderId(),
             'ConsumerName' => 'FirstNameTBA',
             'ConsumerSurname' => 'SurnameTBA',
-            'okUrl' => '/pay',
-            'failUrl' => '/pay',
-            'pendingURL' => '/pay',
+            'okUrl' => $this->request->getOkUrl(),
+            'failUrl' => $this->request->getFailUrl(),
+            'pendingURL' => $this->request->getPendingUrl(),
             'lang' => 'en'
         ];
+        
         return $redirectData;
 
     }
