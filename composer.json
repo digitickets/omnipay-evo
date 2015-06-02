@@ -35,10 +35,9 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "1.0.x-dev"
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "version": "v1.0.0-alpha"
+    "prefer-stable": true
 }
