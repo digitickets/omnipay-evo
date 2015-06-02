@@ -2,8 +2,6 @@
 
 namespace Omnipay\Evo\Message;
 
-use DOMDocument;
-use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
@@ -13,50 +11,33 @@ use Omnipay\Common\Message\RequestInterface;
  */
 class Response extends AbstractResponse implements RedirectResponseInterface
 {
+    /**
+     * @var Omnipay\Evo\Message\PurchaseRequest $request The purchase request object.
+     */
+    protected $request;
+    
     public function __construct(RequestInterface $request, $data)
     {
+        // Decode the response (it's actually very simple).
+        $this->data = $this->decode($data);
         $this->request = $request;
-        $this->data = new \SimpleXMLElement($data);
-        if (!isset($this->data->status)) {
-            throw new InvalidResponseException;
-        }
     }
 
     public function isSuccessful()
     {
-        return 1 === (int) $this->data->status;
+        return (isset($this->data['status']) || $this->data['status'] === 'ok');
     }
 
     public function isRedirect()
     {
-        // 150 is the 3D Secure status code
-        return 150 === (int) $this->data->status;
-    }
-
-    public function getTransactionReference()
-    {
-        return (string) $this->data->evo_reference;
-    }
-
-    public function getTransactionId()
-    {
-        return (string) $this->data->merchantreference;
-    }
-
-    public function getAuthCode()
-    {
-        return (string) (isset($this->data->CardTxn->authcode) ? $this->data->CardTxn->authcode : '');
-    }
-
-    public function getMessage()
-    {
-        return (string) $this->data->reason;
+        // I think we *always* redirect.
+        return true;
     }
 
     public function getRedirectUrl()
     {
         if ($this->isRedirect()) {
-            return (string) $this->data->CardTxn->ThreeDSecure->acs_url;
+            return (string) $this->request->getRedirectUrl();
         }
 
         return '';
@@ -66,23 +47,32 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     {
         return 'POST';
     }
-    
-    protected function getPaReq()
-    {
-        if (isset($this->data->CardTxn->ThreeDSecure->pareq_message)) {
-            return (string)$this->data->CardTxn->ThreeDSecure->pareq_message;
-        } else {
-            return '';
-        }
-    }
 
     public function getRedirectData()
     {
         
-        return array(
-            'PaReq' => $this->getPaReq(),
-            'TermUrl' => $this->getRequest()->getReturnUrl(),
-            'MD' => (string) $this->getTransactionId(),
-        );
+        $redirectData = [
+            'ClientId' => $this->request->getMerchantId(),
+            'StoreType' => $this->request->getMerchantType(),
+            'Token' => $this->data['msg'],
+            'TranType' => 'Auth',
+            'Total' => $this->request->getAmount(),
+            'Currency' => $this->request->getCurrency(),
+            'OrderId' => $this->request->getOrderId(),
+            'ConsumerName' => 'FirstNameTBA',
+            'ConsumerSurname' => 'SurnameTBA',
+            'okUrl' => '/pay',
+            'failUrl' => '/pay',
+            'pendingURL' => '/pay',
+            'lang' => 'en'
+        ];
+        return $redirectData;
+
+    }
+    
+    protected function decode($data) {
+        $tokenParts = [];
+        parse_str($data, $tokenParts);
+        return $tokenParts;
     }
 }
