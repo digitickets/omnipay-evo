@@ -81,6 +81,16 @@ class PurchaseRequest extends AbstractRequest
         return $this->getParameter('pendingUrl');
     }
     
+    public function getConsumerName() {
+        $card = $this->getParameter('card');
+        return $card->getBillingFirstName();
+    }
+
+    public function getConsumerSurname() {
+        $card = $this->getParameter('card');
+        return $card->getBillingLastName();
+    }
+
     public function getOrderId() {
         return $this->OrderId;
     }
@@ -131,6 +141,7 @@ class PurchaseRequest extends AbstractRequest
 
     /**
      * Method to convert a currency symbol (eg 'GBP') into the Evo code (eg 826).
+     * It handles a valid Evo code being passed in (it returns the same value).
      * If the symbol can't be found, it returns null.
      * @param string $currencySymbol The currency symbol.
      * @return string|null The Evo code for the symbol.
@@ -157,6 +168,15 @@ class PurchaseRequest extends AbstractRequest
             'TRY' => '949'
         ];
 
-        return (isset($conversion[$currencySymbol]) ? $conversion[$currencySymbol] : null);
+        if (in_array($currencySymbol, $conversion)) {
+            // It is a valid Evo value.
+            return $currencySymbol;
+        }
+        if (isset($conversion[$currencySymbol])) {
+            // It is a symbol that we know the Evo code for.
+            return $conversion[$currencySymbol];
+        }
+        
+        return null;
     }
 }

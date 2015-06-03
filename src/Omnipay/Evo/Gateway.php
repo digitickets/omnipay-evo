@@ -27,6 +27,7 @@ class Gateway extends AbstractGateway
             'okUrl' => '',
             'failUrl' => '',
             'pendingUrl' => '',
+            'Card' => '',
             'testMode' => false
         );
     }
