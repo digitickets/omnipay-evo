@@ -2,9 +2,6 @@
 
 namespace Omnipay\Evo\Message;
 
-use SimpleXMLElement;
-use Omnipay\Common\Exception\InvalidResponseException;
-
 /**
  * Evo Complete Purchase Request
  */

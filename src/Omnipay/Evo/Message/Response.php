@@ -65,7 +65,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface
             'TranType' => 'Auth',
             'Total' => $this->request->getAmount(),
             'Currency' => $this->request->convertCurrency($this->request->getCurrency()),
-            'OrderId' => $this->request->getOrderId(),
+            'OrderId' => $this->request->getTransactionId(),
             'ConsumerName' => $this->request->getConsumerName(),
             'ConsumerSurname' => $this->request->getConsumerSurname(),
             'okUrl' => $this->request->getOkUrl(),
@@ -81,6 +81,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     protected function decode($data) {
         $tokenParts = [];
         parse_str($data, $tokenParts);
+        
         return $tokenParts;
     }
 

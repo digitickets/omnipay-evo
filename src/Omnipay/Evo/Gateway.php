@@ -2,8 +2,6 @@
 
 namespace Omnipay\Evo;
 
-use Omnipay\Evo\Message\CompletePurchaseRequest;
-use Omnipay\Evo\Message\PurchaseRequest;
 use Omnipay\Common\AbstractGateway;
 
 /**

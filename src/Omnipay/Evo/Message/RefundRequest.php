@@ -2,7 +2,6 @@
 
 namespace Omnipay\Evo\Message;
 
-use DOMDocument;
 use SimpleXMLElement;
 use Omnipay\Common\Message\AbstractRequest;
 

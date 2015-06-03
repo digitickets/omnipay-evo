@@ -21,8 +21,6 @@ class PurchaseRequest extends AbstractRequest
     
     protected $merchantType = '3d_pay_hosting';
     
-    protected $OrderId;
-
     public function getMerchantId()
     {
         return $this->getParameter('merchantId');
@@ -91,19 +89,13 @@ class PurchaseRequest extends AbstractRequest
         return $card->getBillingLastName();
     }
 
-    public function getOrderId() {
-        return $this->OrderId;
-    }
-
     public function getData()
     {
 
-        $this->OrderId = time(); // @TODO: temporary!
-        
         return [
             'ClientId' => $this->getMerchantId(),
             'Password' => $this->getPassword(),
-            'OrderId' => $this->OrderId,
+            'OrderId' => $this->getTransactionId(),
             'Total' => $this->getAmount(),
             'Currency' => $this->convertCurrency($this->getCurrency()),
         ];

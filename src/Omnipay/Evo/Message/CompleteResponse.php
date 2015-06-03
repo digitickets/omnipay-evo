@@ -50,6 +50,10 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
         return ($this->isSuccessful() && isset($this->data['TransId']) ? $this->data['TransId'] : null);
     }
 
+    public function getTransactionId() {
+        return $this->getTransactionReference();
+    }
+
     public function getRedirectUrl() {
         return null;
     }
@@ -60,6 +64,10 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
     
     public function getRedirectData() {
         return [];
+    }
+    
+    public function getOrderReference() {
+        return $this->data['OrderId'];
     }
 
     /**
@@ -89,6 +97,10 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
             // Compare our hash with their hash.
             $this->isHashValid = $localHash === $this->data['HASH'];
         }
+    }
+    
+    public function getCode() {
+        return $this->data['Response'];
     }
 
 }
