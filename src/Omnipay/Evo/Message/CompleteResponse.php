@@ -51,7 +51,7 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
     }
 
     public function getTransactionId() {
-        return $this->getTransactionReference();
+        return $this->data['OrderId'];
     }
 
     public function getRedirectUrl() {
@@ -64,10 +64,6 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
     
     public function getRedirectData() {
         return [];
-    }
-    
-    public function getOrderReference() {
-        return $this->data['OrderId'];
     }
 
     /**
