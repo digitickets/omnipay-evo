@@ -16,7 +16,7 @@ class PurchaseRequest extends AbstractRequest
     protected $liveEndpoint = 'zzz';  // @TODO: This needs to be set.
     protected $testEndpoint = 'https://testvpos.boipa.com:19445/fim/api';
     
-    protected $liveRedirectUrl = 'https:// boipa.com/fim/paymentgate';
+    protected $liveRedirectUrl = 'https://boipa.com/fim/paymentgate';
     protected $testRedirectUrl = 'https://testvpos.boipa.com/fim/paymentgate';
     
     protected $liveMerchantType = 'pay_hosting';
