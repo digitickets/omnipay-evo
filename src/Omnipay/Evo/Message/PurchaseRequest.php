@@ -19,7 +19,8 @@ class PurchaseRequest extends AbstractRequest
     protected $liveRedirectUrl = 'xxx'; // @TODO: Need to find out what this is.
     protected $testRedirectUrl = 'https://testvpos.boipa.com/fim/paymentgate';
     
-    protected $merchantType = 'pay_hosting';
+    protected $liveMerchantType = 'pay_hosting';
+    protected $testMerchantType = '3d_pay_hosting';
     
     public function getMerchantId()
     {
@@ -52,7 +53,7 @@ class PurchaseRequest extends AbstractRequest
     }
     
     public function getMerchantType() {
-        return $this->merchantType;
+        return $this->getTestMode() ? $this->testMerchantType : $this->liveMerchantType;
     }
 
     public function setOkUrl($value) {
