@@ -10,13 +10,13 @@ use Omnipay\Common\Message\AbstractRequest;
  */
 class PurchaseRequest extends AbstractRequest
 {
-    protected $liveTokenUrl = 'https://boipa.com/pg/token';
+    protected $liveTokenUrl = 'https://pay.boipa.com/pg/token';
     protected $testTokenUrl = 'https://testvpos.boipa.com/pg/token';
     
     protected $liveEndpoint = 'zzz';  // @TODO: This needs to be set.
     protected $testEndpoint = 'https://testvpos.boipa.com:19445/fim/api';
     
-    protected $liveRedirectUrl = 'https://boipa.com/fim/paymentgate';
+    protected $liveRedirectUrl = 'https://pay.boipa.com/fim/paymentgate';
     protected $testRedirectUrl = 'https://testvpos.boipa.com/fim/paymentgate';
     
     protected $liveMerchantType = 'pay_hosting';
