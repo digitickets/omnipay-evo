@@ -19,7 +19,7 @@ class PurchaseRequest extends AbstractRequest
     protected $liveRedirectUrl = 'https://pay.boipa.com/fim/paymentgate';
     protected $testRedirectUrl = 'https://testvpos.boipa.com/fim/paymentgate';
     
-    protected $liveMerchantType = 'pay_hosting';
+    protected $liveMerchantType = '3d_pay_hosting';
     protected $testMerchantType = '3d_pay_hosting';
     
     public function getMerchantId()
