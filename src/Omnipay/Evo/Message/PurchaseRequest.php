@@ -13,9 +13,6 @@ class PurchaseRequest extends AbstractRequest
     protected $liveTokenUrl = 'https://pay.boipa.com/pg/token';
     protected $testTokenUrl = 'https://testvpos.boipa.com/pg/token';
     
-    protected $liveEndpoint = 'zzz';  // @TODO: This needs to be set.
-    protected $testEndpoint = 'https://testvpos.boipa.com:19445/fim/api';
-    
     protected $liveRedirectUrl = 'https://pay.boipa.com/fim/paymentgate';
     protected $testRedirectUrl = 'https://testvpos.boipa.com/fim/paymentgate';
     
@@ -106,11 +103,6 @@ class PurchaseRequest extends AbstractRequest
     public function getTokenUrl()
     {
         return $this->getTestMode() ? $this->testTokenUrl : $this->liveTokenUrl;
-    }
-
-    public function getEndpoint()
-    {
-        return $this->getTestMode() ? $this->testEndpoint : $this->liveEndpoint;
     }
 
     public function getRedirectUrl()
