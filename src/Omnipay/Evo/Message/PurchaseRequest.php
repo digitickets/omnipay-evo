@@ -52,6 +52,13 @@ class PurchaseRequest extends AbstractRequest
     public function getMerchantType() {
         return $this->getTestMode() ? $this->testMerchantType : $this->liveMerchantType;
     }
+    
+    public function setReturnUrl($value)
+    {
+        $this->setOkUrl($value);
+        $this->setFailUrl($value);
+        $this->setPendingUrl($value);
+    }
 
     public function setOkUrl($value) {
         return $this->setParameter('okUrl', $value);
