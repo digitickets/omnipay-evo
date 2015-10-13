@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\Evo\Message;
+namespace Pedanticantic\Evo\Message;
 
 /**
  * Evo Complete Purchase Request

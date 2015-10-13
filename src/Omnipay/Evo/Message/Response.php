@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\Evo\Message;
+namespace Pedanticantic\Evo\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
@@ -12,7 +12,7 @@ use Omnipay\Common\Message\RequestInterface;
 class Response extends AbstractResponse implements RedirectResponseInterface
 {
     /**
-     * @var Omnipay\Evo\Message\PurchaseRequest $request The purchase request object.
+     * @var Pedanticantic\Evo\Message\PurchaseRequest $request The purchase request object.
      */
     protected $request;
     
