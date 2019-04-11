@@ -1,6 +1,6 @@
 <?php
 
-namespace Pedanticantic\Evo\Message;
+namespace DigiTickets\Evo\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
@@ -12,10 +12,10 @@ use Omnipay\Common\Message\RequestInterface;
 class Response extends AbstractResponse implements RedirectResponseInterface
 {
     /**
-     * @var Pedanticantic\Evo\Message\PurchaseRequest $request The purchase request object.
+     * @var DigiTickets\Evo\Message\PurchaseRequest $request The purchase request object.
      */
     protected $request;
-    
+
     public function __construct(RequestInterface $request, $data)
     {
         // Decode the response (it's actually very simple).
@@ -57,7 +57,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface
 
     public function getRedirectData()
     {
-        
+
         $redirectData = [
             'ClientId' => $this->request->getMerchantId(),
             'StoreType' => $this->request->getMerchantType(),
@@ -73,15 +73,15 @@ class Response extends AbstractResponse implements RedirectResponseInterface
             'pendingURL' => $this->request->getPendingUrl(),
             'lang' => 'en'
         ];
-        
+
         return $redirectData;
 
     }
-    
+
     protected function decode($data) {
         $tokenParts = [];
         parse_str($data, $tokenParts);
-        
+
         return $tokenParts;
     }
 
@@ -93,7 +93,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         if (isset($this->data['msg'])) {
             return $this->data['msg'];
         }
-        
+
         return 'Unable to retrieve error message';
     }
 }

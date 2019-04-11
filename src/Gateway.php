@@ -1,6 +1,6 @@
 <?php
 
-namespace Pedanticantic\Evo;
+namespace DigiTickets\Evo;
 
 use Omnipay\Common\AbstractGateway;
 
@@ -62,16 +62,16 @@ class Gateway extends AbstractGateway
 
     public function purchase(array $parameters = array())
     {
-        return $this->createRequest('\Pedanticantic\Evo\Message\PurchaseRequest', $parameters);
+        return $this->createRequest('\DigiTickets\Evo\Message\PurchaseRequest', $parameters);
     }
 
     public function completePurchase(array $parameters = array())
     {
-        return $this->createRequest('\Pedanticantic\Evo\Message\CompletePurchaseRequest', $parameters);
+        return $this->createRequest('\DigiTickets\Evo\Message\CompletePurchaseRequest', $parameters);
     }
 
     public function refund(array $parameters = array())
     {
-        return $this->createRequest('\Pedanticantic\Evo\Message\RefundRequest', $parameters);
+        return $this->createRequest('\DigiTickets\Evo\Message\RefundRequest', $parameters);
     }
 }

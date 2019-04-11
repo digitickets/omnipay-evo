@@ -1,6 +1,6 @@
 <?php
 
-namespace Pedanticantic\Evo\Message;
+namespace DigiTickets\Evo\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
@@ -12,10 +12,10 @@ use Omnipay\Common\Message\RequestInterface;
 class CompleteResponse extends AbstractResponse implements RedirectResponseInterface
 {
     /**
-     * @var Pedanticantic\Evo\Message\CompletePurchaseRequest $request The purchase request object.
+     * @var DigiTickets\Evo\Message\CompletePurchaseRequest $request The purchase request object.
      */
     protected $request;
-    
+
     /**
      * @var bool $isHashValid Says whether the hash validation worked or not.
      */
@@ -34,7 +34,7 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
         // Check that the hash validation worked, and that the response was "Approved".
         return ($this->isHashValid && isset($this->data['Response']) && $this->data['Response'] === 'Approved');
     }
-    
+
     public function getMessage() {
         if ($this->isSuccessful()) {
             return null;
@@ -42,10 +42,10 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
         if ($this->isHashValid) {
             return (isset($this->data['ErrMsg']) ? $this->data['ErrMsg'] : null);
         }
-        
+
         return 'Hash validation failed';
     }
-    
+
     public function getTransactionReference() {
         return ($this->isSuccessful() && isset($this->data['TransId']) ? $this->data['TransId'] : null);
     }
@@ -57,11 +57,11 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
     public function getRedirectUrl() {
         return null;
     }
-    
+
     public function getRedirectMethod() {
         return 'GET';
     }
-    
+
     public function getRedirectData() {
         return [];
     }
@@ -69,7 +69,7 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
     /**
      * This method is used to validate that the posted message is valid. It builds a hash
      * value of certain values in the message. Then, the built hash is checked against
-     * the hash in the message - if different, we will raise an error. 
+     * the hash in the message - if different, we will raise an error.
      */
     protected function validateHash() {
         $this->isHashValid = false;
@@ -94,7 +94,7 @@ class CompleteResponse extends AbstractResponse implements RedirectResponseInter
             $this->isHashValid = $localHash === $this->data['HASH'];
         }
     }
-    
+
     public function getCode() {
         return $this->data['Response'];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pedanticantic\Evo\Message;
+namespace DigiTickets\Evo\Message;
 
 use SimpleXMLElement;
 use Omnipay\Common\Message\AbstractRequest;
@@ -12,13 +12,13 @@ class PurchaseRequest extends AbstractRequest
 {
     protected $liveTokenUrl = 'https://pay.boipa.com/pg/token';
     protected $testTokenUrl = 'https://testvpos.boipa.com/pg/token';
-    
+
     protected $liveRedirectUrl = 'https://pay.boipa.com/fim/paymentgate';
     protected $testRedirectUrl = 'https://testvpos.boipa.com/fim/paymentgate';
-    
+
     protected $liveMerchantType = '3d_pay_hosting';
     protected $testMerchantType = '3d_pay_hosting';
-    
+
     public function getMerchantId()
     {
         return $this->getParameter('merchantId');
@@ -48,11 +48,11 @@ class PurchaseRequest extends AbstractRequest
     {
         return $this->setParameter('password', $value);
     }
-    
+
     public function getMerchantType() {
         return $this->getTestMode() ? $this->testMerchantType : $this->liveMerchantType;
     }
-    
+
     public function setReturnUrl($value)
     {
         $this->setOkUrl($value);
@@ -83,7 +83,7 @@ class PurchaseRequest extends AbstractRequest
     public function getPendingUrl() {
         return $this->getParameter('pendingUrl');
     }
-    
+
     public function getConsumerName() {
         $card = $this->getParameter('card');
         return $card->getBillingFirstName();
@@ -104,7 +104,7 @@ class PurchaseRequest extends AbstractRequest
             'Total' => $this->getAmount(),
             'Currency' => $this->convertCurrency($this->getCurrency()),
         ];
-        
+
     }
 
     public function getTokenUrl()
@@ -126,9 +126,9 @@ class PurchaseRequest extends AbstractRequest
         // Send the data to the token URL and process the response.
         $tokenResponse = $this->httpClient->post($this->getTokenUrl(), null, $data, ['timeout' => 5])->send();
         $this->response = new Response($this, $tokenResponse->getBody());
-        
+
         return $this->response;
-        
+
     }
 
     /**
@@ -168,7 +168,7 @@ class PurchaseRequest extends AbstractRequest
             // It is a symbol that we know the Evo code for.
             return $conversion[$currencySymbol];
         }
-        
+
         return null;
     }
 }

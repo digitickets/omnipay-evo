@@ -1,6 +1,6 @@
 <?php
 
-namespace Pedanticantic\Evo\Message;
+namespace DigiTickets\Evo\Message;
 
 /**
  * Evo Complete Purchase Request

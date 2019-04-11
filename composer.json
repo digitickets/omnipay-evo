@@ -1,5 +1,5 @@
 {
-    "name": "pedanticantic/omnipay-evo",
+    "name": "digitickets/omnipay-evo",
     "type": "library",
     "description": "Evo driver for the Omnipay payment processing library",
     "keywords": [
@@ -10,17 +10,17 @@
         "pay",
         "payment"
     ],
-    "homepage": "https://github.com/pedanticantic/omnipay-evo",
+    "homepage": "https://github.com/digitickets/omnipay-evo",
     "license": "MIT",
     "authors": [
         {
             "name": "Glenn Jenkins",
-            "email": "pedanticantic@gmail.com",
+            "email": "glenn.jenkins@digitickets.co.uk",
             "role": "Developer"
         }
     ],
     "autoload": {
-        "psr-4": { "Pedanticantic\\Evo\\" : "src/" }
+        "psr-4": { "DigiTickets\\Evo\\" : "src/" }
     },
     "require": {
         "omnipay/common": "~2.0",

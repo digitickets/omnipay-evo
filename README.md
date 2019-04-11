@@ -2,9 +2,9 @@
 
 **Evo driver for the Omnipay PHP payment processing library**
 
-[![Build Status](https://travis-ci.org/pedanticantic/omnipay-evo.png?branch=master)](https://travis-ci.org/omnipay/evo)
-[![Latest Stable Version](https://poser.pugx.org/pedanticantic/omnipay-evo/version.png)](https://packagist.org/packages/omnipay/evo)
-[![Total Downloads](https://poser.pugx.org/pedanticantic/omnipay-evo/d/total.png)](https://packagist.org/packages/pedanticantic/omnipay-evo)
+[![Build Status](https://travis-ci.org/digitickets/omnipay-evo.png?branch=master)](https://travis-ci.org/omnipay/evo)
+[![Latest Stable Version](https://poser.pugx.org/digitickets/omnipay-evo/version.png)](https://packagist.org/packages/omnipay/evo)
+[![Total Downloads](https://poser.pugx.org/digitickets/omnipay-evo/d/total.png)](https://packagist.org/packages/digitickets/omnipay-evo)
 
 This driver supports the remote Evo Payment Gateway (DPG) service. Payment information is sent and received via XML messages. Customers typically stay on the originating website with this method of integration.
 
@@ -16,7 +16,7 @@ to your `composer.json` file:
 ```json
 {
     "require": {
-        "pedanticantic/omnipay-evo": "~2.0"
+        "digitickets/omnipay-evo": "~2.0"
     }
 }
 ```
