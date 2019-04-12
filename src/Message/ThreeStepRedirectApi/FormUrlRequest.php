@@ -2,6 +2,7 @@
 
 namespace DigiTickets\Evo\Message\ThreeStepRedirectApi;
 
+use Guzzle\Common\Collection;
 use SimpleXMLElement;
 use Omnipay\Common\Message\AbstractRequest;
 
@@ -14,7 +15,6 @@ class FormUrlRequest extends AbstractRequest
 
     public function getData()
     {
-\DigiTickets\Applications\Commands\Personal\Debug::log('getData in FormUrlRequest...');
         // Initiate Step One: Now that we've collected the non-sensitive payment information, we can combine other order information and build the XML format.
         $sales = new SimpleXMLElement('<sale></sale>');
 
@@ -89,13 +89,17 @@ class FormUrlRequest extends AbstractRequest
      */
     public function sendData($data)
     {
-\DigiTickets\Applications\Commands\Personal\Debug::log('Sending data. We should have been given an XML document!');
-\DigiTickets\Applications\Commands\Personal\Debug::log('Data to send is: '.var_export($data, true));
         // Send the data to the token URL and process the response.
-        $formUrlResponse = $this->httpClient->post($this->gatewayURL, null, $data, ['timeout' => 5])->send();
-\DigiTickets\Applications\Commands\Personal\Debug::log('Raw response: '.var_export((string) $formUrlResponse->getBody(), true));
+        $formUrlResponse = $this
+            ->httpClient
+            ->post(
+                $this->gatewayURL,
+                new Collection(['content-type' => 'text/xml']),
+                $data,
+                ['timeout' => 5]
+            )
+            ->send();
         $this->response = new FormUrlResponse($this, (string) $formUrlResponse->getBody());
-\DigiTickets\Applications\Commands\Personal\Debug::log('$this->response'.var_export($this->response, true));
 
         return $this->response;
     }
