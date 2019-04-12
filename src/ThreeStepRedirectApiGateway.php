@@ -14,7 +14,6 @@ class ThreeStepRedirectApiGateway extends AbstractGateway
 {
     public function formUrl(array $parameters = array())
     {
-\DigiTickets\Applications\Commands\Personal\Debug::log('Purchase method being called...');
         return $this->createRequest('\DigiTickets\Evo\Message\ThreeStepRedirectApi\FormUrlRequest', $parameters);
     }
 

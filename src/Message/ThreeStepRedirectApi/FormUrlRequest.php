@@ -13,72 +13,71 @@ class FormUrlRequest extends AbstractRequest
 {
     protected $gatewayURL = 'https://secure.evogateway.com/api/v2/three-step';
 
+    public function setApiKey($value)
+    {
+        return $this->setParameter('apiKey', $value);
+    }
+
+    public function getApiKey()
+    {
+        return $this->getParameter('apiKey');
+    }
+
     public function getData()
     {
         // Initiate Step One: Now that we've collected the non-sensitive payment information, we can combine other order information and build the XML format.
         $sales = new SimpleXMLElement('<sale></sale>');
 
         // Amount, authentication, and Redirect-URL are typically the bare minimum.
-        $sales->addChild('api-key', /*'9hnkxu-8T8F6s-xsCJZW-85v26gM3YpXVua'*/ 'h22Emk93x3pB53ab99EPj95QWdBTAV3G' /*'2F822Rw39fx762MaV7Yy86jXGTC7sCDy'*/); // from params
-        $sales->addChild('redirect-url', 'https://www.digitickets.co.uk'); // from params
-        $sales->addChild('amount', '12.00'); // from params
-        $sales->addChild('ip-address', '176.35.192.190' /*$_SERVER["REMOTE_ADDR"]*/); // from params
-        $sales->addChild('currency', 'USD'); // from params
-
-        // Some additonal fields may have been previously decided by user
-        $sales->addChild('order-id', '1234'); // from params
-        $sales->addChild('order-description', 'Small Order'); // from ??
-        $sales->addChild('tax-amount' , '0.00');
-        $sales->addChild('shipping-amount' , '0.00');
-
-        // Fields added by me.
-        $sales->addChild('industry', 'ecommerce');
-        $sales->addChild('sec-code', 'WEB');
-        $sales->addChild('order-date', '190412');
+        $sales->addChild('api-key', $this->getApiKey());
+        $sales->addChild('redirect-url', $this->getReturnUrl());
+        $sales->addChild('amount', $this->getAmount());
+        $sales->addChild('ip-address', $this->getClientIp());
+        $sales->addChild('currency', $this->getCurrency());
 
         $billing = $sales->addChild('billing');
-        $billing->addChild('first-name', 'first-name'); // from params...
-        $billing->addChild('last-name', 'last-name');
-        $billing->addChild('address1', 'address1');
-        $billing->addChild('city', 'city');
-        $billing->addChild('state', 'state');
-        $billing->addChild('postal', 'postal');
-//        $billing->addChild(billing-address-email);
-        $billing->addChild('country', 'country');
-        $billing->addChild('email', 'email');
-        $billing->addChild('phone', 'phone');
-        $billing->addChild('company', 'company');
-        $billing->addChild('address2', 'address2');
-        $billing->addChild('fax', 'fax');
+        $billing->addChild('first-name', $this->getCard()->getBillingFirstName());
+        $billing->addChild('last-name', $this->getCard()->getBillingLastName());
+        $billing->addChild('address1', $this->getCard()->getBillingAddress1());
+        $billing->addChild('city', $this->getCard()->getBillingCity());
+        $billing->addChild('state', $this->getCard()->getBillingState());
+        $billing->addChild('postal', $this->getCard()->getBillingPostcode());
+//        $billing->addChild('billing-address-email', '??');
+        $billing->addChild('country', $this->getCard()->getBillingCountry());
+        $billing->addChild('email', $this->getCard()->getEmail());
+        $billing->addChild('phone', $this->getCard()->getBillingPhone());
+        $billing->addChild('company', $this->getCard()->getBillingCompany());
+        $billing->addChild('address2', $this->getCard()->getBillingAddress2());
+        $billing->addChild('fax', $this->getCard()->getBillingFax());
 
         $shipping = $sales->addChild('shipping');
-        $shipping->addChild('first-name', 'first-name'); // from params...
-        $shipping->addChild('last-name', 'last-name');
-        $shipping->addChild('address1', 'address1');
-        $shipping->addChild('city', 'city');
-        $shipping->addChild('state', 'state');
-        $shipping->addChild('postal', 'postal');
-        $shipping->addChild('country', 'country');
-        $shipping->addChild('phone', 'phone');
-        $shipping->addChild('email', 'email');
-        $shipping->addChild('company', 'company');
-        $shipping->addChild('address2', 'address2');
+        $shipping->addChild('first-name', $this->getCard()->getShippingFirstName());
+        $shipping->addChild('last-name', $this->getCard()->getShippingLastName());
+        $shipping->addChild('address1', $this->getCard()->getShippingAddress1());
+        $shipping->addChild('city', $this->getCard()->getShippingCity());
+        $shipping->addChild('state', $this->getCard()->getShippingState());
+        $shipping->addChild('postal', $this->getCard()->getShippingPostcode());
+        $shipping->addChild('country', $this->getCard()->getShippingCountry());
+        $shipping->addChild('phone', $this->getCard()->getShippingPhone());
+        $shipping->addChild('email', $this->getCard()->getEmail());
+        $shipping->addChild('company', $this->getCard()->getShippingCompany());
+        $shipping->addChild('address2', $this->getCard()->getShippingAddress2());
 
-        // Try adding a product...
-        $product = $sales->addChild('product');
-        $product->addChild('product-code', 'SKU-123456');
-        $product->addChild('description', 'test product description');
-        $product->addChild('commodity-code', 'abc');
-        $product->addChild('unit-of-measure', 'lbs');
-        $product->addChild('unit-cost', '5.00');
-        $product->addChild('quantity', '1');
-        $product->addChild('total-amount', '7.00');
-        $product->addChild('tax-amount', '2.00');
-        $product->addChild('tax-rate', '1.00');
-        $product->addChild('discount-amount', '2.00');
-        $product->addChild('discount-rate', '1.00');
-        $product->addChild('tax-type', 'sales');
-        $product->addChild('alternate-tax-id', '12345');
+//        // Try adding a product...
+//        $product = $sales->addChild('product');
+//        $product->addChild('product-code', 'SKU-123456');
+//        $product->addChild('description', 'test product description');
+//        $product->addChild('commodity-code', 'abc');
+//        $product->addChild('unit-of-measure', 'lbs');
+//        $product->addChild('unit-cost', '5.00');
+//        $product->addChild('quantity', '1');
+//        $product->addChild('total-amount', '7.00');
+//        $product->addChild('tax-amount', '2.00');
+//        $product->addChild('tax-rate', '1.00');
+//        $product->addChild('discount-amount', '2.00');
+//        $product->addChild('discount-rate', '1.00');
+//        $product->addChild('tax-type', 'sales');
+//        $product->addChild('alternate-tax-id', '12345');
 
         return $sales->asXML();
     }
