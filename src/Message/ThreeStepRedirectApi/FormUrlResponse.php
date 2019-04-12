@@ -9,53 +9,78 @@ use Omnipay\Common\Message\RequestInterface;
  */
 class FormUrlResponse
 {
+    const RESULT_CODE__TRANSACTION_WAS_APPROVED = '100';
+
     /**
      * @var PurchaseRequest $request The purchase request object.
      */
     protected $request;
 
+    /**
+     * @var bool $successful
+     */
+    protected $successful = false;
+
+    /**
+     * @var string|null $formUrl
+     */
+    protected $formUrl;
+
     public function __construct(RequestInterface $request, $data)
     {
-        // Decode the response (it's actually very simple).
-\DigiTickets\Applications\Commands\Personal\Debug::log('Response data: '.var_export($data, true));
-        $this->data = $this->decode($data);
+        $this->data = $data;
         $this->request = $request;
+
+        $this->interpretResponse();
+    }
+
+    /**
+     * Take the raw data, convert to an XML object, then determine whether there was an error or not.
+     * If not, extract the form-url.
+     * We are not interested in why it failed.
+     */
+    protected function interpretResponse()
+    {
+        // Assume it wasn't successful.
+        $this->successful = false;
+        $this->formUrl = null;
+
+        try {
+            $responseXml = simplexml_load_string($this->data);
+
+            // Extract the relevant parts of the response.
+            $resultCode = $this->getNode($responseXml, 'result-code');
+            (string)$responseXml->{'result-code'};
+            $formUrl = $this->getNode($responseXml, 'form-url');
+
+            // If it was successful, set the appropriate values.
+            if ($resultCode === self::RESULT_CODE__TRANSACTION_WAS_APPROVED && !is_null($formUrl)) {
+                $this->successful = true;
+                $this->formUrl = $formUrl;
+            }
+        } catch (\Exception $e) {
+            // Do nothing - we've assumed it wasn't successful.
+        }
+    }
+
+    /**
+     * @param \SimpleXMLElement $xmlObject
+     * @param string $nodeName
+     *
+     * @return string|null
+     */
+    protected function getNode($xmlObject, $nodeName)
+    {
+        return isset($xmlObject->$nodeName) ? (string) $xmlObject->$nodeName : null;
     }
 
     public function isSuccessful()
     {
-        // We actually want to always return false, so that the controller then checks
-        // for redirection.
-        // @TODO: This needs to change!
-        return false;
+        return $this->successful;
     }
 
     public function getFormUrl()
     {
-        return 'form-url:TBC';
+        return $this->formUrl;
     }
-//
-//    public function hasToken()
-//    {
-//        return (isset($this->data['status']) && $this->data['status'] === 'ok');
-//    }
-
-//    protected function decode($data) {
-//        $tokenParts = [];
-//        parse_str($data, $tokenParts);
-//
-//        return $tokenParts;
-//    }
-//
-//    public function getMessage()
-//    {
-//        if ($this->hasToken()) {
-//            return null;
-//        }
-//        if (isset($this->data['msg'])) {
-//            return $this->data['msg'];
-//        }
-//
-//        return 'Unable to retrieve error message';
-//    }
 }
