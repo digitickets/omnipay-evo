@@ -26,4 +26,9 @@ class ThreeStepRedirectApiGateway extends AbstractGateway
     {
         return $this->createRequest('\DigiTickets\Evo\Message\ThreeStepRedirectApi\CompletePurchaseRequest', $parameters);
     }
+
+    public function refund(array $parameters = array())
+    {
+        return $this->createRequest('\DigiTickets\Evo\Message\ThreeStepRedirectApi\RefundRequest', $parameters);
+    }
 }

@@ -12,7 +12,7 @@ class CompletePurchaseRequest extends AbstractThreeStepRedirectRequest
 {
     public function getData()
     {
-        // Initiatse step 3 of the process
+        // Initiate step 3 of the process
         $completePurchase = new SimpleXMLElement('<complete-action></complete-action>');
         $completePurchase->addChild('api-key', $this->getApiKey());
         $completePurchase->addChild('token-id', $this->getToken());

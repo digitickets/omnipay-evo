@@ -2,14 +2,9 @@
 
 namespace DigiTickets\Evo\Message\ThreeStepRedirectApi;
 
-use Omnipay\Common\Message\RequestInterface;
-
-/**
- * Three Step Redirect Api Response
- */
-class CompletePurchaseResponse extends AbstractThreeStepRedirectResponse
+class RefundResponse extends AbstractThreeStepRedirectResponse
 {
-    const RESULT__TRANSACTION_APPROVED = '1';
+    const RESULT__REFUND_APPROVED = '1';
 
     /**
      * @var string|null
@@ -27,17 +22,13 @@ class CompletePurchaseResponse extends AbstractThreeStepRedirectResponse
     protected $transactionReference;
 
     /**
-     * @var string|null
-     */
-    protected $authCode;
-
-    /**
      * Take the raw data, convert to an XML object, then determine whether there was an error or not.
      * If not, extract the form-url.
      * We are not interested in why it failed.
      */
     protected function interpretResponse()
     {
+\DigiTickets\Applications\Commands\Personal\Debug::log('Refund response: '.var_export($this->data, true));
         // Assume it wasn't successful.
         $this->successful = false;
 
@@ -49,10 +40,9 @@ class CompletePurchaseResponse extends AbstractThreeStepRedirectResponse
             $this->code = $this->getNode($responseXml, 'result-code');
             $this->message = $this->getNode($responseXml, 'result-text');
             $this->transactionReference = $this->getNode($responseXml, 'transaction-id');
-            $this->authCode = $this->getNode($responseXml, 'authorization-code');
 
             // If it was successful, set the appropriate values.
-            if ($result === self::RESULT__TRANSACTION_APPROVED) {
+            if ($result === self::RESULT__REFUND_APPROVED) {
                 $this->successful = true;
             }
         } catch (\Exception $e) {
@@ -74,10 +64,5 @@ class CompletePurchaseResponse extends AbstractThreeStepRedirectResponse
     public function getTransactionReference()
     {
         return $this->transactionReference;
-    }
-
-    public function getAuthCode()
-    {
-        return $this->authCode;
     }
 }
