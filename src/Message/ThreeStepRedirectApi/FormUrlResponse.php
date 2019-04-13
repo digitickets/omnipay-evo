@@ -7,32 +7,14 @@ use Omnipay\Common\Message\RequestInterface;
 /**
  * Three Step Redirect Api Response
  */
-class FormUrlResponse
+class FormUrlResponse extends AbstractThreeStepRedirectResponse
 {
     const RESULT_CODE__TRANSACTION_WAS_APPROVED = '100';
-
-    /**
-     * @var PurchaseRequest $request The purchase request object.
-     */
-    protected $request;
-
-    /**
-     * @var bool $successful
-     */
-    protected $successful = false;
 
     /**
      * @var string|null $formUrl
      */
     protected $formUrl;
-
-    public function __construct(RequestInterface $request, $data)
-    {
-        $this->data = $data;
-        $this->request = $request;
-
-        $this->interpretResponse();
-    }
 
     /**
      * Take the raw data, convert to an XML object, then determine whether there was an error or not.
@@ -50,7 +32,6 @@ class FormUrlResponse
 
             // Extract the relevant parts of the response.
             $resultCode = $this->getNode($responseXml, 'result-code');
-            (string)$responseXml->{'result-code'};
             $formUrl = $this->getNode($responseXml, 'form-url');
 
             // If it was successful, set the appropriate values.
@@ -61,22 +42,6 @@ class FormUrlResponse
         } catch (\Exception $e) {
             // Do nothing - we've assumed it wasn't successful.
         }
-    }
-
-    /**
-     * @param \SimpleXMLElement $xmlObject
-     * @param string $nodeName
-     *
-     * @return string|null
-     */
-    protected function getNode($xmlObject, $nodeName)
-    {
-        return isset($xmlObject->$nodeName) ? (string) $xmlObject->$nodeName : null;
-    }
-
-    public function isSuccessful()
-    {
-        return $this->successful;
     }
 
     public function getFormUrl()

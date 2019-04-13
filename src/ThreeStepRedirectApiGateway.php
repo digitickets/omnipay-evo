@@ -12,13 +12,18 @@ use Omnipay\Common\AbstractGateway;
  */
 class ThreeStepRedirectApiGateway extends AbstractGateway
 {
+    public function getName()
+    {
+        return 'Evo Three Step Redirect Api';
+    }
+
     public function formUrl(array $parameters = array())
     {
         return $this->createRequest('\DigiTickets\Evo\Message\ThreeStepRedirectApi\FormUrlRequest', $parameters);
     }
 
-    public function getName()
+    public function completePurchase(array $parameters = array())
     {
-        return 'Evo Three Step Redirect Api';
+        return $this->createRequest('\DigiTickets\Evo\Message\ThreeStepRedirectApi\CompletePurchaseRequest', $parameters);
     }
 }

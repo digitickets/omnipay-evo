@@ -5,25 +5,12 @@ namespace DigiTickets\Evo\Message\ThreeStepRedirectApi;
 use Guzzle\Common\Collection;
 use Omnipay\Common\Item;
 use SimpleXMLElement;
-use Omnipay\Common\Message\AbstractRequest;
 
 /**
  * Three Step Redirect Api Purchase Request
  */
-class FormUrlRequest extends AbstractRequest
+class FormUrlRequest extends AbstractThreeStepRedirectRequest
 {
-    protected $gatewayURL = 'https://secure.evogateway.com/api/v2/three-step';
-
-    public function setApiKey($value)
-    {
-        return $this->setParameter('apiKey', $value);
-    }
-
-    public function getApiKey()
-    {
-        return $this->getParameter('apiKey');
-    }
-
     public function getData()
     {
         // Initiate Step One: Now that we've collected the non-sensitive payment information, we can combine other order information and build the XML format.
@@ -85,16 +72,10 @@ class FormUrlRequest extends AbstractRequest
     public function sendData($data)
     {
         // Send the data to the token URL and process the response.
-        $formUrlResponse = $this
-            ->httpClient
-            ->post(
-                $this->gatewayURL,
-                new Collection(['content-type' => 'text/xml']),
-                $data,
-                ['timeout' => 5]
-            )
-            ->send();
-        $this->response = new FormUrlResponse($this, (string) $formUrlResponse->getBody());
+        $this->response = new FormUrlResponse(
+            $this,
+            (string) $this->apiRequest($data)->getBody()
+        );
 
         return $this->response;
     }
