@@ -31,8 +31,8 @@ And run composer to update your dependencies:
 ## Basic Usage
 
 The three step redirect API driver supports two transaction types:
- * Purchase
- * Refund
+ * Purchase (the way the service initiates a transaction is not supported by Omnipay, so there is a non-standard "formUrl" method instead of the usual "purchase" method. "complete purchase" follows the standards)
+ * Refund (done in a standard way)
 
 The DPG driver (possibly deprecated now) supports two transaction types:
  * Purchase (including 3D Secure support if card holder is registered)
