@@ -13,6 +13,8 @@ class FormUrlRequest extends AbstractThreeStepRedirectRequest
 {
     public function getData()
     {
+        $this->checkApiKey();
+
         // Initiate Step One: Now that we've collected the non-sensitive payment information, we can combine other order information and build the XML format.
         $sales = new SimpleXMLElement('<sale></sale>');
 

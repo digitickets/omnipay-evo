@@ -19,6 +19,11 @@ abstract class AbstractThreeStepRedirectRequest extends AbstractRequest
         return $this->getParameter('apiKey');
     }
 
+    public function checkApiKey()
+    {
+        $this->validate('apiKey');
+    }
+
     /**
      * Make a call to the Evo Three Step Redirect API endpoint, passing it the given (XML) data.
      * @param $data

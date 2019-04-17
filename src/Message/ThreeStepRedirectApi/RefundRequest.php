@@ -8,6 +8,8 @@ class RefundRequest extends AbstractThreeStepRedirectRequest
 {
     public function getData()
     {
+        $this->checkApiKey();
+
         // Initiase a refund.
         $refund = new SimpleXMLElement('<refund></refund>');
         $refund->addChild('api-key', $this->getApiKey());
