@@ -25,7 +25,6 @@ class RefundRequest extends AbstractThreeStepRedirectRequest
      */
     public function sendData($data)
     {
-\DigiTickets\Applications\Commands\Personal\Debug::log('Refund request: '.var_export($data, true));
         // Send the data to the token URL and process the response.
         $this->response = new RefundResponse(
             $this,

@@ -28,7 +28,6 @@ class RefundResponse extends AbstractThreeStepRedirectResponse
      */
     protected function interpretResponse()
     {
-\DigiTickets\Applications\Commands\Personal\Debug::log('Refund response: '.var_export($this->data, true));
         // Assume it wasn't successful.
         $this->successful = false;
 
