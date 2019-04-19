@@ -1,12 +1,14 @@
 # Omnipay: Evo
 
-**Evo driver for the Omnipay PHP payment processing library**
+**Evo drivers for the Omnipay PHP payment processing library**
 
 [![Build Status](https://travis-ci.org/digitickets/omnipay-evo.png?branch=master)](https://travis-ci.org/omnipay/evo)
 [![Latest Stable Version](https://poser.pugx.org/digitickets/omnipay-evo/version.png)](https://packagist.org/packages/omnipay/evo)
 [![Total Downloads](https://poser.pugx.org/digitickets/omnipay-evo/d/total.png)](https://packagist.org/packages/digitickets/omnipay-evo)
 
-This driver supports the remote Evo Payment Gateway (DPG) service. Payment information is sent and received via XML messages. Customers typically stay on the originating website with this method of integration.
+This driver supports the following services:
+- Three Step Redirect API. Sends transaction information, receives a URL. Show card form, posting to that URL. On return, extract the payment information via a token.
+- Remote Evo Payment Gateway (DPG) service. This service seems to be deprecated now. Payment information is sent and received via XML messages. Customers typically stay on the originating website with this method of integration.
 
 ## Installation
 
@@ -28,7 +30,11 @@ And run composer to update your dependencies:
 
 ## Basic Usage
 
-This driver supports two transaction types:
+The three step redirect API driver supports two transaction types:
+ * Purchase (the way the service initiates a transaction is not supported by Omnipay, so there is a non-standard "formUrl" method instead of the usual "purchase" method. "complete purchase" follows the standards)
+ * Refund (done in a standard way)
+
+The DPG driver (possibly deprecated now) supports two transaction types:
  * Purchase (including 3D Secure support if card holder is registered)
  * Refund (you will need to send Evo's reference from the original transaction as the 'transactionReference' parameter.)
 
